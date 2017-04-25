@@ -3,6 +3,7 @@ from sklearn.datasets import load_iris
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix
 
 #load data
 iris=load_iris()
@@ -29,3 +30,7 @@ predict=decisionTree.predict(X=test_dataSet)
 #accuracy
 accuracy=accuracy_score(y_true=test_labels,y_pred=predict)
 print(accuracy)
+
+#confusion matrix
+ConfuMat=confusion_matrix(y_true=test_labels,y_pred=predict)
+print(ConfuMat)
