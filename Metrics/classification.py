@@ -5,6 +5,9 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
+from sklearn.metrics import precision_score
+from sklearn.metrics import recall_score
+from sklearn.metrics import f1_score
 from sklearn.metrics import log_loss
 
 
@@ -27,18 +30,31 @@ decisionTree.fit(X=train_dataSet,y=train_labels)
 
 predict=decisionTree.predict(X=test_dataSet)
 prob=decisionTree.predict_proba(X=test_dataSet)
-print(prob)
+#print(prob)
 #print(predict)
 #print("\n\n\n")
 #print(test_labels)
 
-#accuracy
-accuracy=accuracy_score(y_true=test_labels,y_pred=predict)
-print(accuracy)
-
 #confusion matrix
 ConfuMat=confusion_matrix(y_true=test_labels,y_pred=predict)
-print(ConfuMat)
+print("Confusion Matrix:\n",ConfuMat)
+
+#accuracy
+accuracy=accuracy_score(y_true=test_labels,y_pred=predict)
+print("Accuracy:\n",accuracy)
+
+#precision
+precision=precision_score(y_true=test_labels,y_pred=predict,average=None)
+print("precision:\n",precision)
+
+#recall
+recall=recall_score(y_true=test_labels,y_pred=predict,average=None)
+print("Recall:\n",recall)
+
+#F1
+
+
+
 
 #log loss
 LogLoss=log_loss(y_true=test_labels,y_pred=prob)
