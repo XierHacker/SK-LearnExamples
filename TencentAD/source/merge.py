@@ -2,8 +2,6 @@ import pandas as pd
 import numpy as np
 import data
 
-#从data中得到train,test,和labels
-train_frame,train_labels_frame,test_frame=data.loadFrame()
 #user.csv
 user_frame=data.loadUserFrame()
 #ad.csv
@@ -13,7 +11,9 @@ ad_frame=data.loadAdFrame()
 position_frame=data.loadPositionFrame()
 
 
-def merge(dataSet_frame,isTrain=True):
+def preprocess(dataSet_frame,isTrain=True):
+
+    #---------------------------------merge-------------------------------*
     # merge dataSet_frame and user_frame
     merged_frame = pd.merge(left=dataSet_frame, right=user_frame, on="userID", how="inner")
 
@@ -34,7 +34,27 @@ def merge(dataSet_frame,isTrain=True):
         ],
         axis=1
     )
-    return merged_frame
+
+    #----------------------------------one hot-------------------------------------
+    merged_frame["age"] = merged_frame["age"] // 20
+
+    # trans format to str
+    merged_frame["connectionType"] = merged_frame["connectionType"].astype(str)
+    merged_frame["telecomsOperator"] = merged_frame["telecomsOperator"].astype(str)
+    merged_frame["age"] = merged_frame["age"].astype(str)
+    merged_frame["gender"] = merged_frame["gender"].astype(str)
+    merged_frame["education"] = merged_frame["education"].astype(str)
+    merged_frame["marriageStatus"] = merged_frame["marriageStatus"].astype(str)
+    merged_frame["haveBaby"] = merged_frame["haveBaby"].astype(str)
+    merged_frame["advertiserID"] = merged_frame["advertiserID"].astype(str)
+    merged_frame["appPlatform"] = merged_frame["appPlatform"].astype(str)
+    merged_frame["sitesetID"] = merged_frame["sitesetID"].astype(str)
+    merged_frame["positionType"] = merged_frame["positionType"].astype(str)
+
+    # one hot encoding
+    merged_frame_dummy = pd.get_dummies(data=merged_frame)
+
+    return merged_frame_dummy
 
 
 

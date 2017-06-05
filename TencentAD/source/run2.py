@@ -1,5 +1,7 @@
 import numpy as np
 from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import cross_val_score
+from sklearn.
 from sklearn.model_selection import ShuffleSplit
 from sklearn.metrics import log_loss
 import data
@@ -31,7 +33,6 @@ for train_index,test_index in indices:
 
 
     #log loss
-    loss=-1*log_loss(y_true=train_labels[test_index],y_pred=prob)
+    loss=log_loss(y_true=train_labels[test_index],y_pred=prob)
     print("-------in set ",i,": ------")
     print("log loss:",loss)
-
