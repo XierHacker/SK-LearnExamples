@@ -95,15 +95,17 @@ class MLP():
             self.accuracy=tf.reduce_mean(input_tensor=tf.cast(x=tf.equal(x=self.pred,y=self.y_p),dtype=tf.float32),
                                          name="accuracy")
             #loss
+
+            self.log_loss=tf.reduce_mean(tf.losses.log_loss(labels=self.y_dummy_p,predictions=self.prob))
             #self.log_loss=tf.reduce_mean(tf.nn.)
-            self.cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=self.y_dummy_p))
+            #self.cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=self.y_dummy_p))
             #optimizer
-            self.optimizer = tf.train.GradientDescentOptimizer(0.001).minimize(self.cross_entropy)
+            self.optimizer = tf.train.GradientDescentOptimizer(0.001).minimize(self.log_loss)
 
             self.init = tf.global_variables_initializer()
 
     #training
-    def fit(self,X,y,epochs=5,batch_size=5000,print_log=False):
+    def fit(self,X,y,epochs=10,batch_size=50000,print_log=False):
         #num of samples,features and category
         n_samples=X.shape[0]
         n_features=X.shape[1]
@@ -143,7 +145,7 @@ class MLP():
                 #mini batch
                 for i in range(0,(trainDataSize//batch_size)):
                     _,train_loss,train_accuracy=self.session.run(
-                                    fetches=[self.optimizer,self.cross_entropy,self.accuracy],
+                                    fetches=[self.optimizer,self.log_loss,self.accuracy],
 
                                     feed_dict={self.X_p:X[train_index[i*batch_size:(i+1)*batch_size]],
                                                 self.y_dummy_p:y_dummy[train_index[i*batch_size:(i+1)*batch_size]],
@@ -152,7 +154,7 @@ class MLP():
                                     )
 
                     validation_loss,validation_accuracy=self.session.run(
-                                    fetches=[self.cross_entropy,self.accuracy],
+                                    fetches=[self.log_loss,self.accuracy],
 
                                     feed_dict={self.X_p:X[validation_index],
                                                 self.y_dummy_p:y_dummy[validation_index],
@@ -196,4 +198,4 @@ class MLP():
     def predict_prob(self,X):
         with self.session.as_default():
             prob=self.session.run(fetches=self.prob,feed_dict={self.X_p:X})
-        return prob
+        return prob[:,1]
