@@ -1,12 +1,13 @@
 import pandas as pd
 import numpy as np
 
-def loadFrame():
+def loadTrainFrame():
     train_frame = pd.read_csv("../data/pre/train.csv")
-    train_labels_frame=train_frame.pop("label")
+    return train_frame
+
+def loadTestFrame():
     test_frame = pd.read_csv("../data/pre/test.csv")
-    test_frame.pop("label")
-    return train_frame,train_labels_frame,test_frame
+    return test_frame
 
 
 def loadUserFrame():
