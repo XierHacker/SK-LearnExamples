@@ -53,9 +53,6 @@ print("Recall:\n",recall)
 
 #F1
 
-
-
-
 #log loss
 LogLoss=log_loss(y_true=test_labels,y_pred=prob)
 print(LogLoss)
